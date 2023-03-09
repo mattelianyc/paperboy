@@ -5,15 +5,42 @@ import { useEffect, useState } from 'react';
 import Sidebar from './components/Sidebar';
 
 function App() {
+    
+  const [prompt, setPrompt] = useState("");
+  const [response, setResponse] = useState("");
   
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
+
     getBusinessNews()
       .then(response => {
         setArticles(response.articles)
       });
+
   }, []);
+
+  const handleGPTSubmission = (e) => {
+    e.preventDefault();
+    // Send a request to the server with the prompt
+    fetch("http://localhost:8080/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ prompt })
+    })
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      // Update the response state with the server's response
+      setResponse(data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  };
 
   return (
     <div>
@@ -36,9 +63,14 @@ function App() {
                 <a class="nav-link disabled">Disabled</a>
               </li>
             </ul>
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-              <button class="btn btn-outline-success" type="submit">Search</button>
+            <form class="d-flex" role="search" onSubmit={handleGPTSubmission}>
+              <input
+                type="text"
+                class="form-control me-2"
+                value={prompt} 
+                onChange={(e) => setPrompt(e.target.value)} 
+              />
+              <button class="btn btn-danger" type="submit">GPT</button>
             </form>
           </div>
         </div>
@@ -52,12 +84,10 @@ function App() {
 
           </div>
           <div className='col-9'>
-
             <div className='row row-cols-1 row-cols-sm-1 gy-4 gx-3'>
             
               {
                 articles.map(article => {
-                  debugger
                   return (
                     <div className='col'>
                       <div class="card news-article-card border-dark mb-3 d-flex" data-article-url={article.url}>
@@ -90,7 +120,6 @@ function App() {
               }
             </div>
           </div>
-
           <a
             className="App-link"
             href="https://reactjs.org"
