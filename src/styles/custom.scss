@@ -1,0 +1,48 @@
+// Override default variables before the import
+$body-bg: white;
+$card-height: 100%;
+
+
+.card-header {
+  // height: 64px;
+}
+.article-thumbnail-wrapper {
+  height: 150px;
+  width: 150px;
+}
+.article-thumbnail {
+  object-fit: cover;
+}
+.article-description-wrapper {
+  // line-height: normal;
+}
+.card-body {
+  height: 128px !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+.card-img-overlay {
+  background: rgb(0 0 0 / 50%);
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+// .card-img-overlay > .article-source {}
+.card-img-overlay > .card-description {    
+  position: absolute;
+  top: 0px;
+  left: 5px;
+  padding: 5px;
+  font-weight: 500;
+  font-size: 1.15rem;
+  text-shadow: 2px 2px black;
+  color: white !important;
+}
+
+.news-article-card:hover {
+  cursor: pointer;
+}
+
+
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
